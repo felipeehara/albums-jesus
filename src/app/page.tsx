@@ -19,26 +19,25 @@ const HomePage = () => {
           id: "1",
           title: "Kay Black - Blackout",
           genres: ["Hip-Hop", "Rap"],
-          image: "https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2024/07/20/1481854595-kayblack-12-wmg.png" 
-          // Exemplo de imagem
+          image: "https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2024/07/20/1481854595-kayblack-12-wmg.png"
         },
         {
           id: "2",
           title: "Bruno Mars - 24K Magic",
           genres: ["Pop", "R&B"],
-          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSlR9-3UmgGKxf4kcx1mW68-jRbGh6E9TB1Q&s" // Exemplo de imagem
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSlR9-3UmgGKxf4kcx1mW68-jRbGh6E9TB1Q&s"
         },
         {
           id: "3",
           title: "Adele - 21",
           genres: ["Pop", "Soul"],
-          image: "https://cdns-images.dzcdn.net/images/cover/eaeadce7932a97533fe495881d2fcd7a/0x1900-000000-80-0-0.jpg" // Exemplo de imagem
+          image: "https://cdns-images.dzcdn.net/images/cover/eaeadce7932a97533fe495881d2fcd7a/0x1900-000000-80-0-0.jpg"
         }
       ];
       localStorage.setItem("albums", JSON.stringify(defaultAlbums));
       setAlbums(defaultAlbums);
     }
-  }, []); // Dependência vazia para carregar apenas uma vez
+  }, []);
 
   // Função para adicionar um novo álbum
   const handleAddAlbum = () => {
@@ -54,16 +53,22 @@ const HomePage = () => {
       )
   );
 
-  // Função para remover todos os álbuns
+  // Função para remover todos os álbuns com confirmação
   const handleClearAlbums = () => {
-    localStorage.removeItem("albums"); // Remove os álbuns do localStorage
-    setAlbums([]); // Limpa a lista de álbuns da página
+    const confirmed = window.confirm("Tem certeza de que deseja remover todos os álbuns?");
+    if (confirmed) {
+      localStorage.removeItem("albums"); // Remove os álbuns do localStorage
+      setAlbums([]); // Limpa a lista de álbuns da página
+    }
   };
 
-  // Função para limpar todo o localStorage
+  // Função para limpar todo o localStorage com confirmação
   const handleClearAllStorage = () => {
-    localStorage.clear(); // Limpa todo o conteúdo do localStorage
-    setAlbums([]); // Limpa a lista de álbuns da página
+    const confirmed = window.confirm("Tem certeza de que deseja limpar todo o armazenamento local?");
+    if (confirmed) {
+      localStorage.clear(); // Limpa todo o conteúdo do localStorage
+      setAlbums([]); // Limpa a lista de álbuns da página
+    }
   };
 
   return (
@@ -99,15 +104,14 @@ const HomePage = () => {
         Adicionar Álbum
       </button>
 
-      {/* Botão para remover álbuns */}
+      {/* Botão para remover todos os álbuns com confirmação */}
       <button
         onClick={handleClearAlbums}
-        className="mt-8 bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700"
+        className="mt-4 bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700"
       >
         Remover Álbuns
       </button>
 
-    
     </div>
   );
 };
