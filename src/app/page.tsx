@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import AlbumCard from "./components/AlbumCard";
 import { Album, Artist } from "./types";
+import { ButtonAdd } from "./components/buttonAdd";
 
 const HomePage = () => {
   const [albums, setAlbums] = useState<Album[]>([]); // Dados fictícios ou a partir de uma API
@@ -116,6 +117,8 @@ const HomePage = () => {
           <p className="text-center text-gray-400">Nenhum disco encontrado.</p>
         )}
       </div>
+
+      <ButtonAdd/>
     </div>
   );
 };
