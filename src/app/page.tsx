@@ -13,7 +13,6 @@ const HomePage = () => {
     if (storedAlbums) {
       setAlbums(JSON.parse(storedAlbums));
     } else {
-      // Se não houver álbuns, adicione os álbuns padrão
       const defaultAlbums = [
         {
           id: "1",
@@ -44,6 +43,34 @@ const HomePage = () => {
     router.push("/AddAlbumPage");
   };
 
+  // Função para remover um álbum específico
+  const handleRemoveAlbum = (albumId: string) => {
+    const confirmed = window.confirm("Tem certeza de que deseja remover este álbum?");
+    if (confirmed) {
+      const updatedAlbums = albums.filter((album) => album.id !== albumId);
+      setAlbums(updatedAlbums);
+      localStorage.setItem("albums", JSON.stringify(updatedAlbums));
+    }
+  };
+
+  // Função para remover todos os álbuns com confirmação
+  const handleClearAlbums = () => {
+    const confirmed = window.confirm("Tem certeza de que deseja remover todos os álbuns?");
+    if (confirmed) {
+      localStorage.removeItem("albums");
+      setAlbums([]);
+    }
+  };
+
+  // Função para limpar todo o localStorage com confirmação
+  const handleClearAllStorage = () => {
+    const confirmed = window.confirm("Tem certeza de que deseja limpar todo o armazenamento local?");
+    if (confirmed) {
+      localStorage.clear();
+      setAlbums([]);
+    }
+  };
+
   // Função para filtrar os álbuns
   const filteredAlbums = albums.filter(
     (album) =>
@@ -52,24 +79,6 @@ const HomePage = () => {
         genre.toLowerCase().includes(searchQuery.toLowerCase())
       )
   );
-
-  // Função para remover todos os álbuns com confirmação
-  const handleClearAlbums = () => {
-    const confirmed = window.confirm("Tem certeza de que deseja remover todos os álbuns?");
-    if (confirmed) {
-      localStorage.removeItem("albums"); // Remove os álbuns do localStorage
-      setAlbums([]); // Limpa a lista de álbuns da página
-    }
-  };
-
-  // Função para limpar todo o localStorage com confirmação
-  const handleClearAllStorage = () => {
-    const confirmed = window.confirm("Tem certeza de que deseja limpar todo o armazenamento local?");
-    if (confirmed) {
-      localStorage.clear(); // Limpa todo o conteúdo do localStorage
-      setAlbums([]); // Limpa a lista de álbuns da página
-    }
-  };
 
   return (
     <div className="p-8 bg-black text-white min-h-screen">
@@ -86,7 +95,26 @@ const HomePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {filteredAlbums.length > 0 ? (
           filteredAlbums.map((album) => (
-            <div key={album.id} className="bg-gray-800 p-4 rounded-lg">
+            <div key={album.id} className="bg-gray-800 p-4 rounded-lg relative">
+              <button
+                onClick={() => handleRemoveAlbum(album.id)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-red-600 rounded-full p-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 7l-.867 12.142A2 2 0 0116.136 21H7.864a2 2 0 01-1.997-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3m-3 0h12"
+                  />
+                </svg>
+              </button>
               <img src={album.image} alt={album.title} className="w-full h-40 object-cover rounded-lg mb-4" />
               <h2 className="text-xl font-semibold">{album.title}</h2>
               <p className="text-gray-400">{album.genres.join(", ")}</p>
@@ -104,12 +132,11 @@ const HomePage = () => {
         Adicionar Álbum
       </button>
 
-      {/* Botão para remover todos os álbuns com confirmação */}
       <button
         onClick={handleClearAlbums}
         className="mt-4 bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-700"
       >
-        Remover Álbuns
+        Remover Todos os Álbuns
       </button>
 
     </div>
